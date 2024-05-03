@@ -1,6 +1,8 @@
 import "normalize.css";
 import "./style.sass";
+import { v4 as uuidv4 } from "uuid";
 
+const cartItems = [];
 const app = document.querySelector("#app");
 // header
 const header = document.createElement("header");
@@ -17,12 +19,25 @@ title.textContent = "sneakers";
 const cartContainer = document.createElement("div");
 cartContainer.classList.add("cart__container");
 const cartButton = document.createElement("button");
+cartButton.classList.add("cart__button");
 cartButton.innerHTML = `
+  <span class="hidden__number"></span>
   <img src="./assets/icon-cart.svg" alt="cart"/>
 `;
 const profile = document.createElement("button");
 profile.innerHTML = `
   <img src="./assets/image-avatar.png" alt="profile-avatar"/>
+`;
+const cartInfo = document.createElement("div");
+cartInfo.classList.add("cart__info");
+cartInfo.classList.add("hidden__cart");
+cartInfo.innerHTML = `
+  <div>
+    <p>Cart</p>
+  </div>
+  <div class="cart__items">
+    <p>Your cart is empty</p>
+  </div>  
 `;
 // menu mobile
 const menu = document.createElement("aside");
@@ -89,13 +104,13 @@ pricesContainer.classList.add("prices__container");
 const discountContainer = document.createElement("div");
 discountContainer.classList.add("discount__container");
 const discountPrice = document.createElement("span");
-discountPrice.textContent = "$125.00";
+discountPrice.textContent = "125.00";
 discountPrice.classList.add("discount__price");
 const discount = document.createElement("span");
 discount.textContent = "50%";
 discount.classList.add("discount__percentage");
 const normalPrice = document.createElement("span");
-normalPrice.textContent = "$250.00";
+normalPrice.textContent = "250.00";
 normalPrice.classList.add("normal__price");
 const quantityContainer = document.createElement("div");
 quantityContainer.classList.add("quantity__container");
@@ -140,12 +155,15 @@ mainContainer.append(article);
 
 menuContainer.append(menuButton, title);
 cartContainer.append(cartButton, profile);
-header.append(menuContainer, cartContainer);
+header.append(menuContainer, cartContainer, cartInfo);
 app.append(header, menu, mainContainer);
 
 //functions
 const close = document.querySelector("#close");
 const hamburguer = document.querySelector("#menu");
+
+const cartBtn = document.querySelector(".cart__button");
+
 const carrouselImages = Array.from(
 	document.querySelectorAll(".carrousel__images img")
 );
@@ -159,6 +177,17 @@ const buy = document.querySelector("#buy");
 
 let carrouselCount = 0;
 let amountCount = 0;
+
+close.addEventListener("click", () => {
+	menu.classList.add("hidden");
+});
+hamburguer.addEventListener("click", () => {
+	menu.classList.remove("hidden");
+});
+
+cartBtn.addEventListener("click", () => {
+	cartInfo.classList.toggle("hidden__cart");
+});
 
 next.addEventListener("click", () => {
 	carrouselCount++;
@@ -191,13 +220,6 @@ previous.addEventListener("click", () => {
 	}
 });
 
-close.addEventListener("click", () => {
-	menu.classList.add("hidden");
-});
-hamburguer.addEventListener("click", () => {
-	menu.classList.remove("hidden");
-});
-
 minus.addEventListener("click", () => {
 	amountCount--;
 	if (amountCount !== 0) {
@@ -217,3 +239,86 @@ plus.addEventListener("click", () => {
 	}
 	amount.textContent = amountCount;
 });
+
+buy.addEventListener("click", () => {
+	amountCount = 0;
+	cartItems.push({
+		name: name.textContent,
+		amount: amount.textContent,
+		img: carrouselImg1.src,
+		priceItem: discountPrice.textContent,
+		id: uuidv4(),
+	});
+	document.querySelector(".cart__items").innerHTML = "";
+	cartItems.forEach((item) => {
+		const card = createCard(
+			item.name,
+			item.amount,
+			item.img,
+			item.priceItem,
+			item.id
+		);
+		document.querySelector(".cart__items").append(card);
+	});
+	updateCartCounter();
+});
+
+const createCard = (name, amount, img, price, id) => {
+	const card = document.createElement("div");
+	card.classList.add("item__card");
+	card.id = id;
+	const productImg = document.createElement("img");
+	productImg.src = img;
+	const productInfo = document.createElement("div");
+	productInfo.classList.add("product__info");
+	const productName = document.createElement("p");
+	productName.textContent = name;
+	const priceInfo = document.createElement("div");
+	priceInfo.classList.add("price__info");
+	const priceDescription = document.createElement("p");
+	priceDescription.innerHTML = `$${price} x ${amount}`;
+	const total = document.createElement("p");
+	total.innerHTML = `$${price * amount}`;
+	const deleteBtn = document.createElement("button");
+	deleteBtn.innerHTML = `<img src="./assets/icon-delete.svg" alt="delete button"/>`;
+	deleteBtn.onclick = (e) => {
+		const index = cartItems.findIndex((item) => {
+			return item.id == e.target.parentElement.parentElement.id;
+		});
+		cartItems.splice(index, 1);
+		document.querySelector(".cart__items").innerHTML = "";
+		cartItems.forEach((item) => {
+			const card = createCard(
+				item.name,
+				item.amount,
+				item.img,
+				item.priceItem,
+				item.id
+			);
+			document.querySelector(".cart__items").append(card);
+		});
+		updateCartCounter();
+		if (cartItems === 0) {
+			document.querySelector(
+				".cart__items"
+			).innerHTML = `<p>Your cart is empty</p>`;
+			document
+				.querySelector(".cart__button span")
+				.classList.add("hidden__number");
+		}
+	};
+
+	priceInfo.append(priceDescription, total);
+	productInfo.append(productName, priceInfo);
+	card.append(productImg, productInfo, deleteBtn);
+	return card;
+};
+const updateCartCounter = () => {
+	const cartCounter = document.querySelector(".cart__button span");
+	if (cartItems.length !== 0) {
+		cartCounter.classList.remove("hidden__number");
+		cartCounter.textContent = cartItems.length;
+	} else {
+		cartCounter.classList.add("hidden__number");
+	}
+};
