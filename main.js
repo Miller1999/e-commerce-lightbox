@@ -63,6 +63,9 @@ const article = document.createElement("article");
 const carrouselContainer = document.createElement("div");
 carrouselContainer.classList.add("carrousel__container");
 const carrousel = document.createElement("div");
+const principalImage = document.createElement("img");
+principalImage.classList.add("principal__image");
+principalImage.src = "./assets/image-product-1.jpg";
 carrousel.classList.add("carrousel__images");
 const carrouselImg1 = document.createElement("img");
 const carrouselImg2 = document.createElement("img");
@@ -72,9 +75,12 @@ carrouselImg1.src = "./assets/image-product-1.jpg";
 carrouselImg2.src = "./assets/image-product-2.jpg";
 carrouselImg3.src = "./assets/image-product-3.jpg";
 carrouselImg4.src = "./assets/image-product-4.jpg";
-carrouselImg2.classList.add("hidden__image");
-carrouselImg3.classList.add("hidden__image");
-carrouselImg4.classList.add("hidden__image");
+if (window.innerWidth < 1280) {
+	carrouselImg2.classList.add("hidden__image");
+	carrouselImg3.classList.add("hidden__image");
+	carrouselImg4.classList.add("hidden__image");
+}
+
 const leftButtonCarrousel = document.createElement("button");
 leftButtonCarrousel.id = "previous";
 leftButtonCarrousel.innerHTML = `
@@ -112,6 +118,8 @@ discount.classList.add("discount__percentage");
 const normalPrice = document.createElement("span");
 normalPrice.textContent = "250.00";
 normalPrice.classList.add("normal__price");
+const buyContainer = document.createElement("div");
+buyContainer.classList.add("buy__container");
 const quantityContainer = document.createElement("div");
 quantityContainer.classList.add("quantity__container");
 const leftButtonQuantity = document.createElement("button");
@@ -135,20 +143,41 @@ addCartButton.innerHTML = `
 `;
 addCartButton.classList.add("addCart__button");
 addCartButton.disabled = true;
-
-carrousel.append(carrouselImg1, carrouselImg2, carrouselImg3, carrouselImg4);
+if (window.innerWidth > 1280) {
+	carrousel.append(
+		principalImage,
+		carrouselImg1,
+		carrouselImg2,
+		carrouselImg3,
+		carrouselImg4
+	);
+} else {
+	carrousel.append(carrouselImg1, carrouselImg2, carrouselImg3, carrouselImg4);
+}
+buyContainer.append(quantityContainer, addCartButton);
 carrouselContainer.append(leftButtonCarrousel, rightButtonCarrousel, carrousel);
 discountContainer.append(discountPrice, discount);
 pricesContainer.append(discountContainer, normalPrice);
 quantityContainer.append(leftButtonQuantity, amount, rightButtonQuantity);
-infoContainer.append(
-	company,
-	name,
-	description,
-	pricesContainer,
-	quantityContainer,
-	addCartButton
-);
+
+if (window.innerWidth < 1280) {
+	infoContainer.append(
+		company,
+		name,
+		description,
+		pricesContainer,
+		quantityContainer,
+		addCartButton
+	);
+} else {
+	infoContainer.append(
+		company,
+		name,
+		description,
+		pricesContainer,
+		buyContainer
+	);
+}
 
 article.append(carrouselContainer, infoContainer);
 mainContainer.append(article);
@@ -329,3 +358,18 @@ const updateCartCounter = () => {
 		cartCounter.classList.add("hidden__number");
 	}
 };
+
+const images = Array.from(document.querySelectorAll(".carrousel__images img"));
+images[1].classList.add("selected");
+
+images.forEach((image) =>
+	image.addEventListener("click", (e) => {
+		images[0].src = e.target.src;
+		images.forEach((img) => {
+			if (img !== e.target) {
+				img.classList.remove("selected");
+			}
+		});
+		e.target.classList.add("selected");
+	})
+);

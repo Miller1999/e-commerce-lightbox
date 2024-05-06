@@ -4,6 +4,49 @@
   border: none
   background: transparent
 
+@mixin carrousel($display,$height-images,$height-container,$width-container,$position-images,$button)
+  .carrousel__container
+    position: relative
+    width: $width-container
+    height: $height-container
+    .previous-button__carrousel,.next-button__carrousel
+      visibility: $button
+      position: absolute
+      z-index: 5
+      display: flex
+      justify-content: center
+      align-items: center
+      top: 45%
+      background-color: $White
+      border: none
+      width: 3.5rem
+      height: 3.5rem
+      border-radius: 50%
+      img
+        width: 1rem
+        height: 1rem
+    .previous-button__carrousel
+      left: 5%
+    .next-button__carrousel
+      right: 5%
+    .carrousel__images
+      position: relative
+      width: 100%
+      height: $height-images
+      display: $display
+      grid-template-columns: repeat(4,1fr)
+      grid-template-areas: "principal principal principal principal" "principal principal principal principal" "principal principal principal principal" "principal principal principal principal""principal principal principal principal""img1 img2 img3 img4"
+      gap: 1rem
+      .principal__image
+        grid-area: principal
+      .hidden__image
+        visibility: hidden
+      img
+        position: $position-images
+        width: 100%
+        height: 100%
+        border-radius: 10px
+
 *
   box-sizing: border-box
   font-size: $size
@@ -162,39 +205,7 @@ article
   flex-direction: column
   width: 100%
   padding-bottom: 5rem
-  .carrousel__container
-    position: relative
-    width: 100%
-    height: 40vh
-    .carrousel__images
-      position: relative
-      width: 100%
-      height: 40vh
-      .hidden__image
-        visibility: hidden
-      img
-        position: absolute
-        width: 100%
-        height: 100%
-    button
-      position: absolute
-      z-index: 5
-      display: flex
-      justify-content: center
-      align-items: center
-      top: 45%
-      background-color: $White
-      border: none
-      width: 3.5rem
-      height: 3.5rem
-      border-radius: 50%
-      img
-        width: 1rem
-        height: 1rem
-    .previous-button__carrousel
-      left: 5%
-    .next-button__carrousel
-      right: 5%
+  @include carrousel($display:block,$height-images:40vh,$height-container:40vh,$width-container:100%,$position-images:absolute,$button:visible)
   .info__container
     display: flex
     flex-direction: column
@@ -274,6 +285,9 @@ article
   header
     .menu__button
       display: none
+    .cart__info
+      right: 10%
+      width: 60%
   aside
     position: relative
     height: 100%
@@ -291,8 +305,10 @@ article
       gap: 3rem
       li
         transition: all .5s
+        color: $Grayishblue
       li:hover
         transition: all .5s
+        color: $Verydarkblue
         border-bottom: 1px solid $primary-color
   article
     align-items: center
@@ -300,3 +316,35 @@ article
       width: 70%
     .info__container
       width: 70%
+
+@include desktop()
+  .selected
+    border: 3px solid $primary-color
+    opacity: .3
+  header
+    justify-content: space-evenly
+    .cart__info
+      width: 30%
+  article
+    position: relative
+    flex-direction: row
+    align-items: center
+    justify-content: center
+    gap: 6rem
+    height: 90vh
+    @include carrousel($display: grid,$height-images: 100%,$height-container: 70vh,$width-container: 40%,$position-images:inherit,$button:hidden)
+    .info__container
+      width: 40%
+      height: 70%
+      gap: 3rem
+      .company__info
+        font-size: 2rem
+      .name__info
+        font-size: 3.5rem
+      .description__info
+        font-size: 20px
+        line-height: 3rem
+      .buy__container
+        display: flex
+        div,button
+          width: 50%

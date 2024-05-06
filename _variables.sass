@@ -16,7 +16,12 @@ $light-weight: 400
 $strong-weight: 700
 
 $tablet: 767px
+$desktop: 1280px
 
 @mixin tablet()
   @media (min-width: $tablet)
+    @content
+
+@mixin desktop()
+  @media (min-width: $desktop)
     @content
