@@ -1,6 +1,19 @@
 import "normalize.css";
 import "./style.sass";
 import { v4 as uuidv4 } from "uuid";
+import minusIcon from "./assets/icon-minus.svg";
+import plusIcon from "./assets/icon-plus.svg";
+import cartIcon from "./assets/icon-cart.svg";
+import avatar from "./assets/image-avatar.png";
+import img1 from "./assets/image-product-1.jpg";
+import img2 from "./assets/image-product-2.jpg";
+import img3 from "./assets/image-product-3.jpg";
+import img4 from "./assets/image-product-4.jpg";
+import previousIcon from "./assets/icon-previous.svg";
+import nextIcon from "./assets/icon-next.svg";
+import deleteIcon from "./assets/icon-delete.svg";
+import closeIcon from "./assets/icon-close.svg";
+import menuIcon from "./assets/icon-menu.svg";
 
 const cartItems = [];
 const app = document.querySelector("#app");
@@ -13,7 +26,7 @@ const createMenuContainer = () => {
 	menuButton.classList.add("menu__button");
 	menuButton.id = "menu";
 	menuButton.innerHTML = `
-  <img src="./assets/icon-menu.svg" alt="menu"/>
+  <img src=${menuIcon} alt="menu"/>
 `;
 	const title = document.createElement("h1");
 	title.textContent = "sneakers";
@@ -27,11 +40,11 @@ const createCartContainer = () => {
 	cartButton.classList.add("cart__button");
 	cartButton.innerHTML = `
   <span class="hidden__number"></span>
-  <img src="./assets/icon-cart.svg" alt="cart"/>
+  <img src=${cartIcon} alt="cart"/>
 `;
 	const profile = document.createElement("button");
 	profile.innerHTML = `
-  <img src="./assets/image-avatar.png" alt="profile-avatar"/>
+  <img src=${avatar} alt="profile-avatar"/>
 `;
 	cartContainer.append(cartButton, profile);
 	return cartContainer;
@@ -58,7 +71,7 @@ const createMenu = () => {
 	const closeButton = document.createElement("button");
 	closeButton.id = "close";
 	closeButton.innerHTML = `
-  <img src="./assets/icon-close.svg" alt="close menu"/>
+  <img src=${closeIcon} alt="close menu"/>
 `;
 	const categories = document.createElement("ul");
 	categories.innerHTML = `
@@ -93,16 +106,16 @@ const createCarrousel = () => {
 	const carrousel = document.createElement("div");
 	const principalImage = document.createElement("img");
 	principalImage.classList.add("principal__image");
-	principalImage.src = "./assets/image-product-1.jpg";
+	principalImage.src = img1;
 	carrousel.classList.add("carrousel__images");
 	const carrouselImg1 = document.createElement("img");
 	const carrouselImg2 = document.createElement("img");
 	const carrouselImg3 = document.createElement("img");
 	const carrouselImg4 = document.createElement("img");
-	carrouselImg1.src = "./assets/image-product-1.jpg";
-	carrouselImg2.src = "./assets/image-product-2.jpg";
-	carrouselImg3.src = "./assets/image-product-3.jpg";
-	carrouselImg4.src = "./assets/image-product-4.jpg";
+	carrouselImg1.src = img1;
+	carrouselImg2.src = img2;
+	carrouselImg3.src = img3;
+	carrouselImg4.src = img4;
 	if (window.innerWidth < 1280) {
 		carrouselImg2.classList.add("hidden__image");
 		carrouselImg3.classList.add("hidden__image");
@@ -112,13 +125,13 @@ const createCarrousel = () => {
 	const leftButtonCarrousel = document.createElement("button");
 	leftButtonCarrousel.id = "previous";
 	leftButtonCarrousel.innerHTML = `
-  <img src="./assets/icon-previous.svg" alt="previous button"/>
+  <img src=${previousIcon} alt="previous button"/>
 `;
 	leftButtonCarrousel.classList.add("previous-button__carrousel");
 	const rightButtonCarrousel = document.createElement("button");
 	rightButtonCarrousel.id = "next";
 	rightButtonCarrousel.innerHTML = `
-  <img src="./assets/icon-next.svg" alt="next button"/>
+  <img src=${nextIcon} alt="next button"/>
 `;
 	rightButtonCarrousel.classList.add("next-button__carrousel");
 	if (window.innerWidth > 1280) {
@@ -179,19 +192,19 @@ const createInfoContainer = () => {
 	leftButtonQuantity.id = "minus";
 	leftButtonQuantity.disabled = "true";
 	leftButtonQuantity.innerHTML = `
-  <img src="./assets/icon-minus.svg" alt="minus button"/>
+  <img src="${minusIcon} alt="minus button"/>
 `;
 	const amount = document.createElement("span");
 	amount.textContent = 0;
 	const rightButtonQuantity = document.createElement("button");
 	rightButtonQuantity.id = "plus";
 	rightButtonQuantity.innerHTML = `
-  <img src="./assets/icon-plus.svg" alt="more button"/>
+  <img src=${plusIcon} alt="more button"/>
 `;
 	const addCartButton = document.createElement("button");
 	addCartButton.id = "buy";
 	addCartButton.innerHTML = `
-  <img src="./assets/icon-cart.svg" alt="button cart"/>
+  <img src=${cartIcon} alt="button cart"/>
   <p>Add to cart</p>
 `;
 	addCartButton.classList.add("addCart__button");
@@ -269,7 +282,7 @@ const name = document.querySelector(".name__info");
 const principalImage = document.querySelector(".principal__image");
 let carrouselCount = 0;
 let amountCount = 0;
-console.log(principalImage);
+
 if (window.innerWidth < 768) {
 	close.addEventListener("click", () => {
 		menu.classList.add("hidden");
@@ -374,7 +387,7 @@ const createCard = (name, amount, img, price, id) => {
 	const total = document.createElement("p");
 	total.innerHTML = `$${price * amount}`;
 	const deleteBtn = document.createElement("button");
-	deleteBtn.innerHTML = `<img src="./assets/icon-delete.svg" alt="delete button"/>`;
+	deleteBtn.innerHTML = `<img src=${deleteIcon} alt="delete button"/>`;
 	deleteBtn.onclick = (e) => {
 		const index = cartItems.findIndex((item) => {
 			return item.id == e.target.parentElement.parentElement.id;
@@ -439,7 +452,7 @@ const openModal = () => {
 	const closeButton = document.createElement("button");
 	closeButton.id = "close";
 	closeButton.innerHTML = `
-  <img src="./assets/icon-close.svg" alt="close menu"/>
+  <img src=${closeIcon} alt="close menu"/>
 `;
 	const carouselModal = createCarrousel();
 	modal.append(closeButton, carouselModal);
