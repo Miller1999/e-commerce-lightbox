@@ -14,3 +14,9 @@ $size: 16px
 $family: "Kumbh Sans"
 $light-weight: 400
 $strong-weight: 700
+
+$tablet: 767px
+
+@mixin tablet()
+  @media (min-width: $tablet)
+    @content

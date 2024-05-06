@@ -155,8 +155,15 @@ mainContainer.append(article);
 
 menuContainer.append(menuButton, title);
 cartContainer.append(cartButton, profile);
-header.append(menuContainer, cartContainer, cartInfo);
-app.append(header, menu, mainContainer);
+
+if (window.innerWidth < 767) {
+	header.append(menuContainer, cartContainer, cartInfo);
+	app.append(header, menu, mainContainer);
+} else {
+	menu.classList.remove("hidden");
+	header.append(menuContainer, menu, cartContainer, cartInfo);
+	app.append(header, mainContainer);
+}
 
 //functions
 const close = document.querySelector("#close");

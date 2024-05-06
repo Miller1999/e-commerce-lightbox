@@ -269,3 +269,34 @@ article
       background-color: $Grayishblue
       cursor: not-allowed
       box-shadow: 0rem 1rem 1rem 0rem transparentize($Grayishblue,0.75 )
+
+@include tablet()
+  header
+    .menu__button
+      display: none
+  aside
+    position: relative
+    height: 100%
+    width: 60%
+    background-color: transparent
+    padding: 0
+    flex-direction: row
+    align-items: center
+    justify-content: center
+    box-shadow: none
+    button
+      display: none
+    ul
+      flex-direction: row
+      gap: 3rem
+      li
+        transition: all .5s
+      li:hover
+        transition: all .5s
+        border-bottom: 1px solid $primary-color
+  article
+    align-items: center
+    .carrousel__container
+      width: 70%
+    .info__container
+      width: 70%
